@@ -1,0 +1,25 @@
+{
+  "name": "express-stockings",
+  "version": "1.0.0",
+  "description": "Express middleware for the socketized observable framework",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kgroat/express-stockings.git"
+  },
+  "keywords": [
+    "stockings",
+    "socket",
+    "rest"
+  ],
+  "author": "kgroat <apps@kevingroat.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kgroat/express-stockings/issues"
+  },
+  "homepage": "https://github.com/kgroat/express-stockings#readme"
+}
