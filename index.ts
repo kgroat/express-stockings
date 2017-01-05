@@ -8,14 +8,19 @@ import {StockingsConnection} from 'stockings/src/stockingsConnection';
 const TOKEN_HEADER = 'client-token';
 const SUBSCRIPTION_HEADER = 'client-subscriptions';
 
-declare module 'express' {
-  interface Request {
-    hasClient: () => boolean;
-  }
-  interface Response {
-    subscribe: (eventId: string) => number;
-    broadcast: <T>(eventId: string, payload: T) => void;
-  }
+export interface StockingsRequestMixin {
+  hasClient: () => boolean;
+}
+
+export interface Request extends express.Request, StockingsRequestMixin {
+}
+
+export interface StockingsResponseMixin {
+  subscribe: (eventId: string) => number;
+  broadcast: <T>(eventId: string, payload: T) => void;
+}
+
+export interface Response extends express.Response, StockingsResponseMixin {
 }
 
 export var Connection = StockingsConnection;
@@ -29,7 +34,7 @@ export interface MiddlewareOptions {
   disposeMetaAfter?: number;
 }
 
-export function middleware(options: ServerOptions): express.RequestHandler {
+export function middleware(options: MiddlewareOptions): express.RequestHandler {
   function getAddress(req: express.Request){
     return req.header('x-forwarded-for') || req.connection.remoteAddress;
   }
@@ -51,7 +56,7 @@ export function middleware(options: ServerOptions): express.RequestHandler {
     disposeMetaAfter: options.disposeMetaAfter
   });
 
-  return function middleware(req: express.Request, res: express.Response, next: express.NextFunction) {
+  return function middleware(req: Request, res: Response, next: express.NextFunction) {
     var token = req.header(TOKEN_HEADER);
     var client: StockingsConnection;
     var transactionId: string;
