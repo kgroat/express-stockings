@@ -25,7 +25,7 @@
   "homepage": "https://github.com/kgroat/express-stockings#readme",
   "dependencies": {
     "@types/express": "^4.0.33",
-    "stockings": "^0.1.0",
+    "stockings": "^0.2.0",
     "typescript": "^2.0.8"
   },
   "devDependencies": {
