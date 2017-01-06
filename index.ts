@@ -65,14 +65,14 @@ export function middleware(options: MiddlewareOptions): express.RequestHandler {
       return !!client;
     };
 
-    res.subscribe = (type: string): number => {
+    res.subscribe = (type: string, mergeStrategy?: (a,b)=>any): number => {
       if(!client){
         return 0;
       }
       if(!transactionId){
         transactionId = client.generateTransactionId();
       }
-      var count = client.addSubscription(type, transactionId)
+      var count = client.addSubscription(type, transactionId, mergeStrategy);
       res.setHeader(SUBSCRIPTION_HEADER, client.getSubscriptionHeader(transactionId));
       return count;
     };
