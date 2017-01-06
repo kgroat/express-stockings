@@ -16,7 +16,7 @@ export interface Request extends express.Request, StockingsRequestMixin {
 }
 
 export interface StockingsResponseMixin {
-  subscribe: (eventId: string) => number;
+  subscribe: (eventId: string, mergeStrategy?: (a,b)=>any) => number;
   broadcast: <T>(eventId: string, payload: T) => void;
 }
 
