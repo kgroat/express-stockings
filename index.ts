@@ -68,7 +68,7 @@ export function middleware (options: MiddlewareOptions): RequestHandler {
       stockings.getConnection(token, getAddress(req)).then((_client) => {
         client = _client
         next()
-      })
+      }).catch()
     } else {
       next()
     }
