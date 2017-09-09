@@ -13,8 +13,8 @@ export interface MiddlewareOptions {
   server: http.Server | number
   privateKey: string
   publicKey?: string
-  requestFilter?: (req: ConnectionRequest) => boolean
   algorithm?: string
+  requestFilter?: (req: ConnectionRequest) => boolean
   disposeMetaAfter?: number
 }
 
@@ -45,18 +45,18 @@ export function middleware (options: MiddlewareOptions): RequestHandler {
     let client: StockingsConnection
     let transactionId: string
 
-    req.hasClient = () => {
+    req.hasStockingsClient = () => {
       return !!client
     }
 
-    res.subscribe = (type: string, mergeStrategy?: MergeStrategy): number => {
+    res.subscribe = (type: string, mergeStrategy?: MergeStrategy, upsertKey?: string): number => {
       if (!client) {
         return 0
       }
       if (!transactionId) {
         transactionId = client.generateTransactionId()
       }
-      const count = client.addSubscription(type, transactionId, mergeStrategy)
+      const count = client.addSubscription(type, transactionId, mergeStrategy, upsertKey)
       res.setHeader(SUBSCRIPTION_HEADER, client.getSubscriptionHeader(transactionId))
       return count
     }
