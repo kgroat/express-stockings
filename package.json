@@ -1,6 +1,6 @@
 {
   "name": "express-stockings",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Express middleware for the socketized observable framework",
   "main": "index.js",
   "types": "index.d.ts",
