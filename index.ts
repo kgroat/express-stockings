@@ -1,27 +1,12 @@
 
-
 import * as http from 'http';
-import * as express from 'express';
-import {Server as StockingsServer, ServerOptions, ConnectionRequest} from 'stockings';
-import {StockingsConnection} from 'stockings/src/stockingsConnection';
+import { Request, Response, RequestHandler, NextFunction } from 'express';
+import { Server as StockingsServer, ServerOptions, ConnectionRequest } from 'stockings';
+import { StockingsConnection} from 'stockings/src/stockingsConnection';
+import './customTypings/express-bindings'
 
 const TOKEN_HEADER = 'client-token';
 const SUBSCRIPTION_HEADER = 'client-subscriptions';
-
-export interface StockingsRequestMixin {
-  hasClient: () => boolean;
-}
-
-export interface Request extends express.Request, StockingsRequestMixin {
-}
-
-export interface StockingsResponseMixin {
-  subscribe: (eventId: string, mergeStrategy?: (a,b)=>any) => number;
-  broadcast: <T>(eventId: string, payload: T) => void;
-}
-
-export interface Response extends express.Response, StockingsResponseMixin {
-}
 
 export var Connection = StockingsConnection;
 
@@ -34,8 +19,8 @@ export interface MiddlewareOptions {
   disposeMetaAfter?: number;
 }
 
-export function middleware(options: MiddlewareOptions): express.RequestHandler {
-  function getAddress(req: express.Request){
+export function middleware(options: MiddlewareOptions): RequestHandler {
+  function getAddress(req: Request){
     return req.header('x-forwarded-for') || req.connection.remoteAddress;
   }
 
@@ -56,7 +41,7 @@ export function middleware(options: MiddlewareOptions): express.RequestHandler {
     disposeMetaAfter: options.disposeMetaAfter
   });
 
-  return function middleware(req: Request, res: Response, next: express.NextFunction) {
+  return function middleware(req: Request, res: Response, next: NextFunction) {
     var token = req.header(TOKEN_HEADER);
     var client: StockingsConnection;
     var transactionId: string;
