@@ -1,6 +1,6 @@
 import * as http from 'http'
 import { Request, Response, RequestHandler, NextFunction } from 'express'
-import { Server as StockingsServer, ConnectionRequest } from 'stockings'
+import { Server as StockingsServer, ConnectionRequest, MergeStrategy } from 'stockings'
 import { StockingsConnection } from 'stockings/src/stockingsConnection'
 import './customTypings/express-bindings'
 
@@ -49,7 +49,7 @@ export function middleware (options: MiddlewareOptions): RequestHandler {
       return !!client
     }
 
-    res.subscribe = (type: string, mergeStrategy?: (a,b) => any): number => {
+    res.subscribe = (type: string, mergeStrategy?: MergeStrategy): number => {
       if (!client) {
         return 0
       }
@@ -60,6 +60,7 @@ export function middleware (options: MiddlewareOptions): RequestHandler {
       res.setHeader(SUBSCRIPTION_HEADER, client.getSubscriptionHeader(transactionId))
       return count
     }
+
     res.broadcast = <T>(type: string, payload: T, cb?: (err: any) => void) => {
       stockings.sendData(type, payload, cb)
     }

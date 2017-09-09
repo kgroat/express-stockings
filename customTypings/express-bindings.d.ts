@@ -1,4 +1,5 @@
 import 'express'
+import { MergeStrategy } from 'stockings'
 
 declare global {
   namespace Express {
@@ -6,8 +7,8 @@ declare global {
       hasClient: () => boolean
     }
     interface Response {
-      subscribe: (eventId: string, mergeStrategy?: (a,b)=>any) => number
-      broadcast: <T>(eventId: string, payload: T) => void
+      subscribe: (eventId: string, mergeStrategy?: MergeStrategy) => number
+      broadcast: <T>(eventId: string, payload: T, cb?: (err: any) => void) => void
     }
   }
 }
